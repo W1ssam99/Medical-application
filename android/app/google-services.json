@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "548892719383",
+    "project_id": "medic-ff740",
+    "storage_bucket": "medic-ff740.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548892719383:android:e1e47aca93a2a829a55f52",
+        "android_client_info": {
+          "package_name": "com.example.medic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMCJ0w563lB_rxvRafm-oYZKbyP-VGILk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

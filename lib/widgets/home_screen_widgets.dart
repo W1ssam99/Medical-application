@@ -6,6 +6,10 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../consts/colors.dart';
 import '../views/supdetail_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
+import 'dart:io';
 
 Widget CostumeTextFilled({hintText, Icon}) {
   return Container(
@@ -144,66 +148,79 @@ Widget OrderDelevery({text}) {
   ).box.color(purple).outerShadowSm.rounded.make();
 }
 
-Widget ProductCard({ontap}) {
+Widget ProductCard(QuerySnapshot<Map<String, dynamic>> snapshot) {
+  final products = snapshot.docs;
+
   return Row(
     children: List.generate(
-      Supplement.supList.length,
-      (index) => Padding(
-        padding: const EdgeInsets.only(right: 13, bottom: 13, left: 2),
-        child: GestureDetector(
-          onTap: () {
-            ontap;
-          },
-          child: Column(
-            children: [
-              Container(
-                height: 115,
-                width: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(15),
-                      topLeft: Radius.circular(15)),
-                  image: DecorationImage(
-                    image: AssetImage(Supplement.supList[index].image),
-                    fit: BoxFit.cover,
+      products.length,
+      (index) {
+        final product = products[index].data() as Map<String, dynamic>;
+        final name = product['name'] as String?;
+        final description = product['description'] as String?;
+        final price = product['price']?.toDouble() as double?;
+        final imageUrl = product['image'] as String?;
+
+        return Padding(
+          padding: const EdgeInsets.only(right: 13, bottom: 13, left: 2),
+          child: GestureDetector(
+            onTap: () {},
+            child: Column(
+              children: [
+                Container(
+                  height: 105,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(15),
+                        topLeft: Radius.circular(15)),
+                    image: DecorationImage(
+                      image: NetworkImage(imageUrl ?? ''),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 8, bottom: 8),
-                    child: Text(Supplement.supList[index].name)
-                        .text
-                        .size(18)
-                        .make(),
-                  )),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8, top: 5),
-                    child: Text(Supplement.supList[index].Price)
-                        .text
-                        .bold
-                        .size(19)
-                        .make(),
-                  )),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8, left: 4, bottom: 8),
-                    child: Row(
-                      children: [
-                        Icon(Icons.location_on),
-                        2.widthBox,
-                        Text(Supplement.supList[index].city),
-                      ],
-                    ),
-                  )),
-            ],
-          ).box.size(170, 230).rounded.color(natureWhite).outerShadowSm.make(),
-        ),
-      ),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 8, left: 8, bottom: 8),
+                      child: Text(name ?? '').text.size(18).make(),
+                    )),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, top: 5),
+                      child: Text(price?.toString() ?? '')
+                          .text
+                          .bold
+                          .size(19)
+                          .make(),
+                    )),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 8, left: 4, bottom: 8),
+                      child: Row(
+                        children: [
+                          Icon(Icons.location_on),
+                          2.widthBox,
+                          Text(description ?? '').text.size(16).make(),
+                        ],
+                      ),
+                    )),
+              ],
+            )
+                .box
+                .size(170, 230)
+                .rounded
+                .color(natureWhite)
+                .outerShadowSm
+                .make(),
+          ),
+        );
+      },
     ),
   );
 }

@@ -10,14 +10,9 @@ import 'package:velocity_x/velocity_x.dart';
 import '../consts/iconst.dart';
 import '../widgets/drugStore_screen_wedgit.dart';
 
-class DrugStoreScreen extends StatefulWidget {
+class DrugStoreScreen extends StatelessWidget {
   const DrugStoreScreen({super.key});
 
-  @override
-  State<DrugStoreScreen> createState() => _DrugStoreScreenState();
-}
-
-class _DrugStoreScreenState extends State<DrugStoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Responsive(
@@ -73,18 +68,31 @@ class _DrugStoreScreenState extends State<DrugStoreScreen> {
               Text("City,Street").text.bold.color(purple).make()
             ],
           ),
-          SingleChildScrollView(
-              child: Column(
-            children: [
-              24.heightBox,
-              UploadYourData(),
-              24.heightBox,
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Category())
-
-            ],
-          ))
+Expanded(
+  child: SingleChildScrollView(
+    scrollDirection: Axis.vertical,
+    child: Column(
+      children: [
+        24.heightBox,
+        UploadYourData(),
+        24.heightBox,
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Category(),
+        ),
+        9.heightBox,
+      SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            height: 530,
+            width: 375,
+            child: DrugProductSearch(),
+          ),
+        ),
+      ],
+    ),
+  ),
+),
         ]),
       ),
     );
